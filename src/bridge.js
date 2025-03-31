@@ -14,10 +14,8 @@
 
 window.addEventListener("message", async ({ data }) => {
   try {
-    const audioCtx = new AudioContext();
     const audio = await fetch(data.objectUrl);
-    const arrayBuffer = await audio.arrayBuffer();
-    const content = await audioCtx.decodeAudioData(arrayBuffer);
+    const content = await audio.blob();
 
     const session = await LanguageModel.create({
       expectedInputs: [{ type: "audio" }],
