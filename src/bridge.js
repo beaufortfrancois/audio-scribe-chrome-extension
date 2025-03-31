@@ -19,7 +19,9 @@ window.addEventListener("message", async ({ data }) => {
     const arrayBuffer = await audio.arrayBuffer();
     const content = await audioCtx.decodeAudioData(arrayBuffer);
 
-    const session = await window.ai.languageModel.create();
+    const session = await LanguageModel.create({
+      expectedInputs: [{ type: "audio" }],
+    });
     const stream = session.promptStreaming([
       { type: "audio", content },
       "transcribe this audio",
