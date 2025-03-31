@@ -12,22 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-window.addEventListener("message", async ({ data }) => {
-  try {
-    const audio = await fetch(data.objectUrl);
-    const content = await audio.blob();
-
-    const session = await LanguageModel.create({
-      expectedInputs: [{ type: "audio" }],
-    });
-    const stream = session.promptStreaming([
-      { type: "audio", content },
-      "transcribe this audio",
-    ]);
-    for await (const chunk of stream) {
-      chrome.runtime.sendMessage({ chunk });
-    }
-    chrome.runtime.sendMessage({ chunk: "$END" });
-
-  } catch (error) {}
+window.addEventListener("message", ({ data }) => {
+  chrome.runtime.sendMessage({ data });
 });
